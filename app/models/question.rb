@@ -5,4 +5,7 @@ class Question < ActiveRecord::Base
 
   accepts_nested_attributes_for :answers, :reject_if => lambda { |a| a[:answer].blank? },
     :allow_destroy => true
+
+  validates_presence_of :question
+  validates_length_of :question, minimum: 10, maximum: 50
 end
