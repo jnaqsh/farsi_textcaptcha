@@ -29,6 +29,7 @@ gem 'twitter-bootstrap-rails', :git => 'git@github.com:jnaqsh/twitter-bootstrap-
 gem 'rails-i18n', git: 'https://github.com/iCEAGE/rails-i18n.git'
 
 gem 'nested_form', :git => 'https://github.com/ryanb/nested_form.git'
+gem 'simple_form'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

@@ -1,0 +1,29 @@
+fa:
+  #----------------------views--------------------------------------------------
+  questions:
+    new:
+      title: "سوال جدید"
+    form:
+      add_another_answer: "اضافه کردن پاسخی دیگر"
+      submit: "ایجاد سوال"
+    answer_field:
+      remove_this_answer: "حذف این پاسخ"
+
+
+  #---------------------activerecord--------------------------------------------
+  activerecord:
+    models:
+      question: "سوال"
+      answer: "پاسخ"
+
+    attributes:
+      question:
+        question: "سوال"
+        approved: "تاییدشده؟"
+      answer:
+        answer: "پاسخ"
+
+  #---------------------helpers-------------------------------------------------
+  helpers:
+    links:
+      cancel: "لغو"

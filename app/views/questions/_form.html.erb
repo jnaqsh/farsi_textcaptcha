@@ -1,24 +1,19 @@
-<%= nested_form_for @question, :html => { :class => 'form-horizontal' } do |f| %>
-  <div class="control-group">
-    <%= f.label :question, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :question, :class => 'text_field' %>
-    </div>
-  </div>
+<%= simple_nested_form_for @question, :html => { :class => 'form-horizontal' } do |f| %>
+
+  <%= f.input :question, wrapper: :prepend do %>
+    <span class="add-on"><i class="icon-question-sign"></i></span>
+    <%= f.input_field :question, class: "span6" %>
+  <% end %>
+
   <%= f.fields_for :answers do |builder| %>
     <%= render "answer_field", :f => builder %>
   <% end %>
-  <p><%= f.link_to_add "اضافه کردن پاسخ", :answers %></p>
+  <p><%= f.link_to_add t('.add_another_answer'), :answers %></p>
 
-  <div class="control-group">
-    <%= f.label :approved, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.check_box :approved, :class => 'check_box' %>
-    </div>
-  </div>
+  <%= f.input :approved %>
 
   <div class="form-actions">
-    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= f.button :submit, t('.submit'), class: 'btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 questions_path, :class => 'btn' %>
   </div>

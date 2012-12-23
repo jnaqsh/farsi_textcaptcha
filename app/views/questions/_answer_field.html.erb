@@ -1,7 +1,5 @@
-<div class="control-group">
-  <%= f.label :answer, :class => 'control-label' %>
-  <div class="controls">
-    <%= f.text_field :answer, :class => 'text_field' %>
-    <%= f.link_to_remove "remove" %>
-  </div>
-</div>
+<%= f.input :answer, :wrapper => :prepend do %>
+  <span class="add-on"><i class="icon-pencil"></i></span>
+    <%= f.input_field :answer, class: "span6" %>
+<% end %>
+<%= f.link_to_remove t('.remove_this_answer') %>
