@@ -1,4 +1,13 @@
 class QuestionsController < ApplicationController
+  def unapproved
+    @questions = Question.unapproved
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @questions }
+    end
+  end
+
   # GET /questions
   # GET /questions.json
   def index

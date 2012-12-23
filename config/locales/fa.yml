@@ -1,6 +1,10 @@
 fa:
   #----------------------views--------------------------------------------------
   questions:
+    unapproved:
+      title: "فهرست سوال‌های تاییدنشده"
+    index:
+      title: "فهرست سوال‌ها"
     new:
       title: "سوال جدید"
     form:
@@ -20,6 +24,7 @@ fa:
       question:
         question: "سوال"
         approved: "تاییدشده؟"
+        created_at: "تاریخ ایجاد"
       answer:
         answer: "پاسخ"
 
@@ -27,3 +32,8 @@ fa:
   helpers:
     links:
       cancel: "لغو"
+      new: "جدید"
+      edit: "ویرایش"
+      destroy: "حذف"
+      back: "برگشت"
+    actions: "عملیات"

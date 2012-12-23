@@ -2,7 +2,9 @@ FarsiTextcaptcha::Application.routes.draw do
   root to: "static_pages#home"
 
   resources :answers
-  resources :questions
+  resources :questions do
+    get 'unapproved' => "questions#unapproved", on: :collection
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
