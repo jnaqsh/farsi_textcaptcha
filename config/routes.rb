@@ -1,9 +1,8 @@
 FarsiTextcaptcha::Application.routes.draw do
+  root to: "static_pages#home"
+
   resources :answers
-
-
   resources :questions
-
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
