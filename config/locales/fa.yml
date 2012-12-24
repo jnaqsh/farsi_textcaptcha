@@ -1,5 +1,18 @@
 fa:
+  #----------------------controllers--------------------------------------------
+  controllers:
+    users:
+      create:
+        flash:
+          success: "با موفقیت ثبت‌نام کردید، کلید api شما به ایمیل‌تان فرستاده شد."
+      update:
+        flash:
+          success: "اطلاعات کاربر با موفقیت به‌روز گردید."
+
   #----------------------views--------------------------------------------------
+  layouts:
+    application:
+      register: "ثبت‌نام"
   questions:
     unapproved:
       title: "فهرست سوال‌های تاییدنشده"
@@ -13,6 +26,8 @@ fa:
     answer_field:
       remove_this_answer: "حذف این پاسخ"
   users:
+    index:
+      title: "فهرست کاربران"
     form:
       submit: "ثبت‌نام"
     new:
@@ -34,6 +49,8 @@ fa:
       answer:
         answer: "پاسخ"
       user:
+        id: "شناسه"
+        created_at: "تاریخ ثبت‌نام"
         full_name: "نام و نام خانوادگی"
         email: "ایمیل"
         api_key: "کلید api"
@@ -46,6 +63,7 @@ fa:
       edit: "ویرایش"
       destroy: "حذف"
       back: "برگشت"
+      confirm: "آیا مطمئن هستید؟"
     actions: "عملیات"
 
   #-------------------errors----------------------------------------------------

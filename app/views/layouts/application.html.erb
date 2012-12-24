@@ -45,6 +45,11 @@
             <span class="icon-bar"></span>
           </a>
           <a class="brand" href="/">کپچای متنی</a>
+          <div class="pull-left">
+            <ul class="nav">
+                <li><%= link_to t('.register'), new_user_path %></li>
+            </ul>
+          </div>
           <div class="container nav-collapse">
             <ul class="nav">
               <li><%= link_to "سوالی جدید بنویسید", new_question_path  %></li>
@@ -56,6 +61,13 @@
     </div>
 
     <div class="container">
+      <% flash.each do |name, msg| %>
+        <div class="alert alert-<%= name == :notice ? 'success' : 'error' %> ">
+          <a class="close" data-dismiss="alert">×</a>
+          <%= msg %>
+        </div>
+      <% end %>
+
         <div class="row">
           <div class="span9">
              <%= yield %>
