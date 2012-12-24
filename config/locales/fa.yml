@@ -12,6 +12,11 @@ fa:
       submit: "ایجاد سوال"
     answer_field:
       remove_this_answer: "حذف این پاسخ"
+  users:
+    form:
+      submit: "ثبت‌نام"
+    new:
+      title: "ثبت‌نام"
 
 
   #---------------------activerecord--------------------------------------------
@@ -19,6 +24,7 @@ fa:
     models:
       question: "سوال"
       answer: "پاسخ"
+      user: "کاربر"
 
     attributes:
       question:
@@ -27,6 +33,10 @@ fa:
         created_at: "تاریخ ایجاد"
       answer:
         answer: "پاسخ"
+      user:
+        full_name: "نام و نام خانوادگی"
+        email: "ایمیل"
+        api_key: "کلید api"
 
   #---------------------helpers-------------------------------------------------
   helpers:
@@ -37,3 +47,8 @@ fa:
       destroy: "حذف"
       back: "برگشت"
     actions: "عملیات"
+
+  #-------------------errors----------------------------------------------------
+  errors:
+    messages:
+      email_format: "ایمیل نادرست است"

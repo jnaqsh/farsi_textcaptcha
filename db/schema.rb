@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121215095650) do
+ActiveRecord::Schema.define(:version => 20121224102726) do
 
   create_table "answers", :force => true do |t|
     t.string   "answer"
@@ -27,5 +27,15 @@ ActiveRecord::Schema.define(:version => 20121215095650) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end
+
+  create_table "users", :force => true do |t|
+    t.string   "full_name"
+    t.string   "email"
+    t.string   "api_key"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "users", ["api_key"], :name => "index_users_on_api_key"
 
 end
