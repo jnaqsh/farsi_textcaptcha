@@ -55,7 +55,7 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       if @question.save
-        format.html { redirect_to @question, notice: 'Question was successfully created.' }
+        format.html { redirect_to @question, notice: I18n.t('controllers.questions.create.flash.success') }
         format.json { render json: @question, status: :created, location: @question }
       else
         format.html { render action: "new" }
@@ -71,7 +71,7 @@ class QuestionsController < ApplicationController
 
     respond_to do |format|
       if @question.update_attributes(params[:question])
-        format.html { redirect_to @question, notice: 'Question was successfully updated.' }
+        format.html { redirect_to @question, notice: I18n.t('controllers.questions.update.flash.success') }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -92,10 +92,21 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def approve
+    @question = Question.find(params[:id])
+
+    @question.approve
+
+    respond_to do |format|
+      format.html { redirect_to @question,
+        notice: I18n.t('controllers.questions.approve.flash.success') }
+    end
+  end
+
   def api_get
     @user = User.find_by_api_key(params[:api_key])
 
-    @question = Question.random
+    @question = Question.random if @user
 
     respond_to do |format|
       format.xml

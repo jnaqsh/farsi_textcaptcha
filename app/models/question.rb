@@ -13,6 +13,10 @@ class Question < ActiveRecord::Base
   scope :unapproved, where(approved: false)
 
   def self.random
-    Question.offset(rand(Question.count)).first
+    Question.approved.offset(rand(Question.approved.count)).first
+  end
+
+  def approve
+    update_attributes approved: true
   end
 end

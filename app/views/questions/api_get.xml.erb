@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<% if @user %>
+<% if @user and @question %>
   <captcha>
     <question><%= @question.question %></question>
     <% @question.answers.each do |a| %>

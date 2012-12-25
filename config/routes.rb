@@ -3,6 +3,7 @@ FarsiTextcaptcha::Application.routes.draw do
   resources :answers
   resources :questions do
     get 'unapproved' => "questions#unapproved", on: :collection
+    put "approve/:id" => "questions#approve", on: :collection, as: "approve"
   end
 
   root to: "static_pages#home"
