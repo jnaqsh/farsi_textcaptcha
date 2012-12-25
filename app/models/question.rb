@@ -11,4 +11,8 @@ class Question < ActiveRecord::Base
 
   scope :approved, where(approved: true)
   scope :unapproved, where(approved: false)
+
+  def self.random
+    Question.offset(rand(Question.count)).first
+  end
 end

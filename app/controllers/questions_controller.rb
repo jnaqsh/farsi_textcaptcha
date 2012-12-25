@@ -91,4 +91,14 @@ class QuestionsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def api_get
+    @user = User.find_by_api_key(params[:api_key])
+
+    @question = Question.random
+
+    respond_to do |format|
+      format.xml
+    end
+  end
 end

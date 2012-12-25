@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<% if @user %>
+  <captcha>
+    <question><%= @question.question %></question>
+    <% @question.answers.each do |a| %>
+      <answer><%= a.answer_md5 %></answer>
+    <% end %>
+  </captcha>
+<% else %>
+  <error>
+    <%= "cannot find #{params[:api_key]} in account dictionary" %>
+  </error>
+<% end %> 
