@@ -16,15 +16,15 @@ class Answer < ActiveRecord::Base
   private
 
   def generate_md5_for_answer
-    self.answer_md5 = Digest::MD5.hexdigest(self.answer)
+    self.answer_md5 = Digest::MD5.hexdigest(self.answer.strip)
   end
 
   def persian_cleanup
-    self.answer = self.answer.persian_cleanup
+    self.answer = self.answer.persian_cleanup.strip
   end
 
   def make_non_standard
-      self.question.answers.create!({answer: to_non_standard(self.answer),
+      self.question.answers.create!({answer: to_non_standard(self.answer.strip),
         cleanup: true}, without_protection: true)
   end
 

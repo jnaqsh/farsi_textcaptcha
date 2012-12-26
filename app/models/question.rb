@@ -26,6 +26,6 @@ class Question < ActiveRecord::Base
   private
 
   def persian_cleanup
-    self.question = self.question.persian_cleanup
+    self.question = self.question.persian_cleanup.strip
   end
 end

@@ -30,6 +30,16 @@ gem 'rails-i18n', git: 'https://github.com/iCEAGE/rails-i18n.git'
 
 gem 'nested_form', :git => 'https://github.com/ryanb/nested_form.git'
 gem 'simple_form'
+
+group :test, :development do
+  gem "rspec-rails"
+end
+
+group :test do
+  gem 'capybara'
+  gem 'shoulda-matchers'
+end
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
