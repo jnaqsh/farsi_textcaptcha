@@ -16,19 +16,19 @@
 
     <!-- For third-generation iPad with high-resolution Retina display: -->
     <!-- Size should be 144 x 144 pixels -->
-    <%= favicon_link_tag 'images/apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %>
+    <%= favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %>
 
     <!-- For iPhone with high-resolution Retina display: -->
     <!-- Size should be 114 x 114 pixels -->
-    <%= favicon_link_tag 'images/apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114' %>
+    <%= favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114' %>
 
     <!-- For first- and second-generation iPad: -->
     <!-- Size should be 72 x 72 pixels -->
-    <%= favicon_link_tag 'images/apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72' %>
+    <%= favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72' %>
 
     <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
     <!-- Size should be 57 x 57 pixels -->
-    <%= favicon_link_tag 'images/apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png' %>
+    <%= favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png' %>
 
     <!-- For all other devices -->
     <!-- Size should be 32 x 32 pixels -->
@@ -44,7 +44,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/">کپچای متنی</a>
+          <%= link_to (image_tag "farsi_textcaptcha_logo.png"), root_path, class: "brand" %>
           <div class="pull-left">
             <ul class="nav">
                 <li><%= link_to t('.register'), new_user_path %></li>
@@ -77,12 +77,15 @@
             <div class="well sidebar-nav">
               <h3><%= link_to "textcaptcha.ir", "http://textcaptcha.ir/" %></h3>
               <ul class="nav nav-list">
-                <li><%= link_to "نمونه کدها", "/path1"  %></li>
-                <li><%= link_to "چرا نه؟", "/path2"  %></li>
+                <li><%= link_to "آیا واقعا نیاز به کپچا دارید؟", "/really"  %></li>
+                <li><%= link_to "چرا؟", "/why"  %></li>
                 <li><%= link_to "سوالی جدید بنویسید", new_question_path %></li>
-                <li><%= link_to "پیش‌نمایش", "/path3"  %></li>
-                <li><%= link_to "چگونه کار می‌کند؟", "/path3"  %></li>
-                <li><%= link_to "Api", "/path3"  %></li>
+                <li><%= link_to "پیش‌نمایش", "/demo"  %></li>
+                <li><%= link_to "چگونه کار می‌کند؟", "/how_it_works"  %></li>
+                <li><%= link_to "ثبت‌نام", "/register"  %></li>
+                <li><%= link_to "Api", "/api"  %></li>
+                <li><%= link_to "#{(number_to_human @number_of_approved_questions).persian_cleanup} سوال ساده!",
+                  root_path %></li>
               </ul>
             </div><!--/.well -->
           </div><!--/span-->

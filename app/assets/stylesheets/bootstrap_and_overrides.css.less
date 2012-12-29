@@ -34,3 +34,67 @@ body {
 //
 // Example:
 // @linkColor: #ff0000;
+
+@font-face {
+  font-family: "Iranian Sans";
+  src: url('IranianSans.eot?#') format('eot'), /* IE6–8 */
+       url('IranianSans.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+       url('IranianSans.ttf') format('truetype'); /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+}
+
+@linkColorHover:                #9D008B;
+@sansFontFamily:                "Iranian Sans", Tahoma,"Helvetica Neue", Helvetica, Arial, sans-serif;
+@navbarHeight:                  60px;
+@navbarLinkColorHover:          #9D008B;
+@navbarLinkColorActive:         #710065;
+@dropdownLinkBackgroundHover:   desaturate(lighten(#710065, 50%), 50%);
+@navbarLinkBackgroundHover:     #fff;
+@navbarLinkBackgroundActive:    desaturate(lighten(#710065, 50%), 50%);
+@formActionsBackground:         desaturate(lighten(#710065, 70%), 50%);
+@inputBorder:                   desaturate(lighten(#710065, 60%), 50%);
+
+.navbar-inner {
+  #gradient > .vertical(#fff, #fff);
+  background-image: none;
+  border: 0;
+  border-bottom: 1px solid desaturate(lighten(#710065, 30%), 50%);
+  .box-shadow(0);
+}
+
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus {
+  @top-border-size: 4px;
+  padding-top: ((@navbarHeight - @baseLineHeight) / 2) - @top-border-size;
+  border-top: @top-border-size solid #710065;
+  background-color: #fff;
+  .box-shadow(0 0 0);
+}
+
+// Everything else
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  // Focus state
+  &:focus {
+    border-color: rgb(229, 18, 204, .8);
+    .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgb(229, 18, 204, .6)");
+  }
+}
+
+.navbar .brand {
+  padding: 5px;
+}
