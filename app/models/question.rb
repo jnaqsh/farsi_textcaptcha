@@ -3,17 +3,17 @@ class Question < ActiveRecord::Base
 
   has_many :answers
 
-  accepts_nested_attributes_for :answers, :reject_if => lambda { |a| a[:answer].blank? },
-    :allow_destroy => true
+  accepts_nested_attributes_for :answers, :allow_destroy => true
 
   validates_presence_of :question
   validates_length_of :question, minimum: 10, maximum: 150
   validates_uniqueness_of :question, case_sensitive: false
+  validate :must_have_at_least_one_answer
 
   scope :approved, where(approved: true)
   scope :unapproved, where(approved: false)
 
-  before_save :persian_cleanup
+  before_validation :persian_cleanup
 
   def self.random(number=nil)
     if number
@@ -28,6 +28,12 @@ class Question < ActiveRecord::Base
   end
 
   private
+
+  def must_have_at_least_one_answer
+    if answers.empty? or answers.all? {|answer| answer.marked_for_destruction? }
+      errors.add(:base, 'Must have at least one answer')
+    end
+  end
 
   def persian_cleanup
     self.question = self.question.persian_cleanup.strip

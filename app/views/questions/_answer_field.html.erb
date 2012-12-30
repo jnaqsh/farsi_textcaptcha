@@ -1,5 +1,4 @@
-<%= f.input :answer, :wrapper => :prepend do %>
-  <span class="add-on"><i class="icon-pencil"></i></span>
-    <%= f.input_field :answer, class: "span6" %>
+<%= f.input :answer, :wrapper => :append do %>
+  <%= f.input_field :answer, class: "span6" %>
+  <%= f.link_to_remove t('.remove_this_answer'), class: "btn" %>
 <% end %>
-<%= f.link_to_remove t('.remove_this_answer') %>

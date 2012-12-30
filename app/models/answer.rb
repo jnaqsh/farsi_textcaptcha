@@ -6,10 +6,11 @@ class Answer < ActiveRecord::Base
   belongs_to :question
 
   before_validation :persian_cleanup, unless: :not_cleanup
-  before_save :generate_md5_for_answer
+  before_validation :generate_md5_for_answer
 
   validates_presence_of :answer
   validates_uniqueness_of :answer, scope: :question_id, case_sensitive: false
+  validates_uniqueness_of :answer_md5, scope: :question_id, case_sensitive: false
 
   private
 
