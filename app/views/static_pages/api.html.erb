@@ -1,0 +1,37 @@
+<h3><abbr title="Application Programming Interface">API</abbr> وب سرویس</h3>
+<p>
+بعد از این‌که شما <a href="/register">ثبت‌نام</a> کردید، به شما یک کلید اختصاصی API داده می‌شود. این کلید به شما اجازه می‌دهد که به رابط <abbr title="eXtended Markup Language">XML</abbr> وب سرویس دسترسی پیدا کنید. برای آزمایش شما می‌توانید از <a href="/demo">پیش‌نمایش</a> که از مجموعهٔ کوچکی از سوالات استفاده می‌کند، استفاده کنید.
+</p>
+<p>
+یک سوال کپچا را می‌توان با استفاده از درخواست GET به آدرس زیر، دریافت کرد:
+<blockquote><p>http://api.textcaptcha.ir/your_api_key</p></blockquote>
+</p>
+
+<p>
+  پاسخ XML شامل عناصر question و answer هستند:
+  <ul>
+    <li>عنصر question، سوال است که در فرمت plain text است.</li>
+    <li>عناصر answer، تبدیل‌شده‌های جواب‌ها به MD5 هستند.</li>
+  </ul>
+
+  <pre>
+    &lt;captcha&gt;
+      &lt;question&gt;اگر فردا جمعه باشد، امروز چه روزی است؟&lt;/question&gt;
+      &lt;answer&gt;2cf0a16e46fe60f46860b4a85d8d8267&lt;/answer&gt;
+      &lt;answer&gt;b2b62f03dd1e10f6c069fc38998bcbf4&lt;/answer&gt;
+      &lt;answer&gt;32da14ea4ea092878fb3b1209437ff2a&lt;/answer&gt;
+      &lt;answer&gt;2a6e26fd11c7934fcd8a9c8ef605dc89&lt;/answer&gt;
+      &lt;answer&gt;bf03b48482f59ea0f3622bb1b55ce750&lt;/answer&gt;
+      &lt;answer&gt;e6b059b2f172b05ff1b930a75e36e5fd&lt;/answer&gt;
+    &lt;/captcha&gt;
+  </pre>
+</p>
+
+<p>
+  در مثال XML بالا، ۶ جواب ممکن است وجود داشته باشد، «پنج‌شنبه»، «پنج شنبه»، «۵شنبه»، «۵ شنبه»، «5شنبه» و «5 شنبه». تمام جواب‌ها MD5 شده‌اند. توجه کنید که در سیستم‌عامل ویندوز به‌دلیل استفاده نشدن از کیبورد استاندارد فارسی، اعداد به انگلیسی نیز جواب صحیح محسوب می‌شوند. برای این‌که بدانید چگونه این XML را به سوال و جواب در فرم تبدیل کنید، باید بخوانید که <a href="/how_it_works">چگونه از این سرویس استفاده باید کرد</a>.
+</p>
+
+<h4>محدودیت درخواست</h4>
+<p>
+ما به شما توصیه می‌کنیم که برنامهٔ خود را طوری بنویسید که در صورت جواب ندادن API به درخواست شما، از یک مجموعه سوال/جواب محلی که در دیسک ذخیره شده‌است استفاده کنید.
+</p>
