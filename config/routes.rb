@@ -1,5 +1,5 @@
 FarsiTextcaptcha::Application.routes.draw do
-  resources :users
+  resources :users, except: [:new, :create]
   resources :answers
   resources :questions do
     get 'unapproved' => "questions#unapproved", on: :collection
@@ -7,6 +7,13 @@ FarsiTextcaptcha::Application.routes.draw do
   end
 
   root to: "static_pages#home"
+  get "/really" => "static_pages#really"
+  get "/why" => "static_pages#why"
+  get "/demo" => "static_pages#demo"
+  get "/how_it_works" => "static_pages#how_it_works"
+  get "/api" => "static_pages#api"
+  get "/register" => "users#new", as: "new_user"
+  post "/register" => "users#create", as: "users"
 
   constraints :subdomain => 'api', :format => :xml do
     # Routing for API requests

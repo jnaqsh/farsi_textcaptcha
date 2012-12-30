@@ -5,7 +5,7 @@ class Answer < ActiveRecord::Base
 
   belongs_to :question
 
-  before_save :persian_cleanup, unless: :not_cleanup
+  before_validation :persian_cleanup, unless: :not_cleanup
   before_save :generate_md5_for_answer
 
   validates_presence_of :answer
