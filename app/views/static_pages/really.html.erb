@@ -1,0 +1,143 @@
+<h3>آیا واقعا نیاز به کپچا دارید؟</h3>
+<p>
+  کپچا حصاری است برای محافظت از سیستم شما، که از آن سوء استفاده نشود. ممکن است از آن برای محافظت از دیدگاه‌ها در برابر اسپم و یا در فرم ثبت‌نام استفاده شود. اما این حصار برای کاربران شما نیز مشکل ایجاد خواهد کرد و آن‌ها را اجبار به انجام یک کار اضافی می‌کند. گاهی اوقات می‌توان از آن استفاده نکرد. قبل از آن‌که از کپچا استفاده کنید به مثال‌های زیر که با پی‌اچ‌پی نوشته شده‌است توجه کنید، شاید نیازی به استفاده کپچا نداشته باشید.
+</p>
+
+<h4>۱. استفاده از Timeout/Session Token در فرم</h4>
+<p>
+  شما می‌توانید از کاری که برای جلوگیری از حملات <abbr title="Cross-Site Request Forgeries">CSRF</abbr> انجام می‌دهید، استفاده کنید. ایده این است که مطمئن شوید قبل از این‌که فرم شما توسط POST فرستاده شود، آن توسط GET گرفته شده‌است. ربات‌های خودکار معمولا از مرحلهٔ گرفتن فرم با استفاده از GET، مستقیم آن را POST می‌کنند.
+</p>
+<p>
+  اگر شما از session store برای نگهداری وضعیت استفاده می‌کنید، می‌توان از session salt که به صورت تصادفی تولید شده‌است، استفاده کنید:
+</p>
+
+<pre class="prettyprint linenums">
+  &lt;?php
+  session_start();
+  if (!isset($_SESSION[&#x27;salt&#x27;])
+    $_SESSION[&#x27;salt&#x27;] = sha1(uniqid());
+
+  // ... [snip] ...
+
+  // check salt on submission
+  if (count($_POST) &amp;&amp; !$_POST[&#x27;salt&#x27;]===$_SESSION[&#x27;salt&#x27;]) {
+    // error condition, redisplay form
+  }
+
+  // ... [snip] ...
+
+  // include salt in requested form
+  echo &quot;&lt;input type=hidden name=salt value=$salt&gt;&quot;;
+</pre>
+<p>
+
+<p>
+  اگر شما از session state استفاده نمی‌کنید، این کار را می‌توان با استفاده از timeouts در فرم که امضا (signed) شده‌است، پیاده کرد.
+
+  <pre class="prettyprint linenums">
+    &lt;?php
+    define(&#x27;SALT&#x27;,&#x27;My^%*&amp;SecretSalt&#x27;);
+
+    // ... [snip] ...
+
+    // include signed request time in form
+    $now = time(); $signed = $now.&#x27;#&#x27;.sha1(SALT.$now.SALT);
+    echo &quot;&lt;input type=hidden name=requested value=$signed&gt;&quot;;
+
+    // ... [snip] ...
+
+    // check timeout on submission
+    if (count($_POST)) {
+      list($when,$hash) = explode(&#x27;#&#x27;,$_POST[&#x27;requested&#x27;],2);
+      if ($hash!==sha1(SALT.$when.SALT) || $when&lt;(time()-30*60)) {
+        // error condition, redisplay form; either
+        // corrupted or the form was served &gt; 30 minutes
+        // ago
+      }
+    }</pre>
+</p>
+
+<h4>۲. ظرف عسل یا کپچای برعکس</h4>
+<p>
+  با استفاده از ظرف عسل یا کپچای برعکس می‌توان تعداد ربات‌هایی در وب‌گاه شما وارد می‌شوند را شمرد. معمولا ربات‌ها تمام فیلدها را پر می‌کند و تمام checkboxها را تیک می‌زنند. شما می‌توانید یک checkbox تعریف کنید و با کمک CSS آن را مخفی کنید که کاربر معمولی نتواند آن را ببیند. کسانی که آن checkbox را تیک می‌زنند یقینا ربات هستند.
+  <pre class="prettyprint linenums">
+    &lt;?php
+    if (isset($_POST[&#x27;honeypot&#x27;])) {
+    // error condition, redisplay form
+    }
+    ?&gt;
+
+    ...
+    &lt;label style=&quot;display:block;position:absolute;left:-9999px&quot;&gt;
+    Please leave this checkbox blank
+    &lt;input type=checkbox name=honeypot value=1&gt;
+    &lt;/label&gt;
+    ...</pre>
+</p>
+
+<h4>۳. فیلدهایی با نام پویا</h4>
+<p>
+  سوء استفاده از یک فرم که نام فیلدهای آن در بین درخواست‌ها ثابت باشد، خیلی ساده است. اگر شما از session/timeout token برای محافظت فرم خود استفاده می‌کنید، می‌توانید نام فیلدها را براساس آن token تغییر دهید. تنها مشکلی که این روش دارد این است که موتور autocomplete مرورگرها نمی‌توانند نام فیلدها را به دلیل پویا بودن تشخیص دهند.
+
+  <pre class="prettyprint linenums">
+    &lt;?php
+    define(&#x27;SALT&#x27;,&#x27;My^%*&amp;SecretSalt&#x27;);
+    function fieldname($name,$salt) {
+      return sha1($name.$salt.SALT);
+    }
+
+    // submitted
+    if (count($_POST)) {
+      $token = $_POST[&#x27;token&#x27;];
+      list($when,$hash) = explode(&#x27;#&#x27;,$token,2);
+      if ($hash!==sha1(SALT.$when.SALT) || $when&lt;(time()-30*60)) {
+        // error (over 30min timeout)
+      }
+      $fn = fieldname(&#x27;comment&#x27;,$token);
+      $comment = isset($_POST[$fn]) ? $_POST[$fn] : null;
+      if (!$comment) {
+        // error (no comment submitted)
+      }
+      // etc
+    }
+
+    // ... [snip] ...
+
+    // create token
+    $now = time(); $token = $now.&#x27;#&#x27;.sha1(SALT.$now.SALT);
+    ?&gt;
+
+    ...
+    &lt;label&gt;Comment
+      &lt;textarea name=&quot;&lt;?php echo fieldname(&#x27;comment&#x27;,$token); ?&gt;&quot;&gt;&lt;/textarea&gt;
+    &lt;/label&gt;
+    &lt;input type=hidden name=token
+        value=&quot;&lt;?php echo $token; ?&gt;&quot;&gt;
+    ...</pre>
+</p>
+
+<h4>۴. فیلترهای «فازی»</h4>
+<p>
+  فیلترهای فازی می‌تواند برای برنامهٔ شما مناسب و کارا باشد. برای مثال دیدگاه‌های یک وبلاگ می‌تواند فورا منتشر شود و یا این‌که آن دیدگاه به صف مدیریت فرستاده شود که آن صف مدیریت می‌تواند تشخیص دهد که می‌تواند آن منتشر شود یا خیر. آن صف مدیریت با می‌تواند براساس فاکتورهای از پیش تعریف شده احتمال اسپم بودن و یا نبودن محاسبه کند و اگر احتمال اسپم بودن بالا بود آن را در دستهٔ فرستاده‌شده‌ها توسط ربات دسته‌بندی کند.<br />
+  این فاکتورها برای شما ممکن است متفاوت باشد، اما می‌توان فاکتورهای زیر را برای دیدگاه‌های یک وبلاگ تعریف کرد:
+  <ul>
+    <li>آیا دیدگاه فرستاده شده دارای referrer معتبر است؟ فرم دیدگاه شما از کجا فرستاده شده‌است؟</li>
+    <li>اگر فرم شما دارای زمان باشد (همانطور که گفته شد) چه مقدار زمان برای پر کردن آن وقت صرف شده‌است؟ آیا کمتر از ۲ ثانیه است؟ اگر این‌طور باشد به احتمال بالایی دیدگاه از سوی یک ربات فرستاده شده‌است.</li>
+    <li>آیا دیدگاه دارای یک URL است؟ معمولا این هدف یک اسپم است.</li>
+    <li>آیا User-Agent مربوط به یک مرورگر عادی است؟</li>
+    <li>آیا این دیدگاه از سوی یک کاربری فرستاده شده‌است که هویتش مشخص شده‌است؟ آیا قبلا نیز دیدگاهی ارسال کرده‌است؟</li>
+  </ul>
+
+  هیچ‌کدام از فاکتورهای بالا به تنهایی نمی‌تواند مشخص کند که دیدگاه توسط یک ربات فرستاده شده‌است اما احتمال فرستاده شدن توسط ربات را بالا می‌برد. اگر احتمال اسپم بودن یک دیدگاه بالا بود می‌توانید آن را صف مدیریت بفرستید و اگر احتمال اسپم بودن پایین آن‌را منتشر کنید.
+</p>
+
+<h4>۵. مراحل پیش‌نمایش/تایید</h4>
+<p>
+  شرایطی که گفته شد می‌تواند یک فرم یک مرحله‌ای را محافظت کند. فرم‌های چندمرحله‌ای بسیار کار را برای ربات‌های خودکار سخت می‌کند. اگر فرم شما ساده است، می‌توانید یک مرحله تایید هم به فرم اضافه کنید.
+</p>
+
+<h3><a href="/why">بعدی؟</a></h3>
+<p>
+  اگر با در نظر گرفتن مراحل بالا هنوز ربات‌ها مزاحم شما می‌شوند، وقت <a href="/why">پیاده‌سازی یک کپچا فرا رسیده‌است</a>. روش‌های بالا باعث کاهش حملات می‌شود اما حملات را کاملا از بین نمی‌برد. اضافه کردن کپچا هم کار را برای ربات‌ها سخت‌تر می‌کند، اما غیرممکن نمی‌کند و برنامه یا وب‌گاه شما کامل امن نمی‌شود.<br />
+  <a href="/why">نظر موافقان و مخالفان کپچای متنی را بخوانید</a>
+</p>

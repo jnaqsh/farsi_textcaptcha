@@ -1,0 +1,113 @@
+<h3>سرویس کپچای متنی چگونه کار می‌کند؟</h3>
+<p>
+  وقتی شما <a href="/register">ثبت‌نام</a> کردید، به شما یک کلید <abbr title="Application Programming Interface">API</abbr> داده می‌شود. این کلید یک کلید منحصربه‌فرد برای وب‌گاه شماست، مانند رمز عبور. برای آزمایش شما می‌توانید از کلید «demo» استفاده کنید که از یک مجموعه کوچک از سوالات استفاده می‌کند.
+</p>
+
+<p>
+  هر وقت شما نیاز به یک سوال منطقی داشتید، می‌توانید درخواستی به سرور ما بفرستید. آن یک پاسخ XML که شامل یک سوال و جواب تصادفی است را برمی‌گرداند. برای جلوگیری از کاربران مزاحم (ربات‌ها) جواب‌ها با استفاده از الگوریتم MD5، تبدیل به Hash می‌شوند. این به شما اجازه می‌دهد بدون دانستن جواب، جواب کاربر را Hash کنید و با Hash اصلی مقایسه کنید.
+</p>
+<p>
+  در زیر چندین مثال با استفاده از زبان پی‌اچ‌پی آورده شده‌است که نشان می‌دهد چگونه می‌توان از این سرویس در وب‌گاه خود استفاده کنید. در زبان‌های دیگر نیز پلاگین‌هایی برای کار با کپچای متنی نوشته شده‌است:
+  <ul>
+    <li>برای <strong>Wordpress</strong>، </li>
+    <li>برای <strong>روبی آن ریلز</strong>، </li>
+    <li>برای <strong>دروپال</strong>،</li>
+  </ul>
+</p>
+
+<h4>استفاده پایه</h4>
+<p>URL برای دریافت پاسخ XML کپچای متنی:</p>
+<blockquote>http://api.textcaptcha.ir/your_api_key</blockquote>
+<p>نمونه‌ای از پاسخ XML به صورت زیر است:</p>
+<pre>
+  &lt;captcha&gt;
+    &lt;question&gt;اگر فردا جمعه باشد، امروز چه روزی است؟&lt;/question&gt;
+    &lt;answer&gt;2cf0a16e46fe60f46860b4a85d8d8267&lt;/answer&gt;
+    &lt;answer&gt;b2b62f03dd1e10f6c069fc38998bcbf4&lt;/answer&gt;
+    &lt;answer&gt;32da14ea4ea092878fb3b1209437ff2a&lt;/answer&gt;
+    &lt;answer&gt;2a6e26fd11c7934fcd8a9c8ef605dc89&lt;/answer&gt;
+    &lt;answer&gt;bf03b48482f59ea0f3622bb1b55ce750&lt;/answer&gt;
+    &lt;answer&gt;e6b059b2f172b05ff1b930a75e36e5fd&lt;/answer&gt;
+  &lt;/captcha&gt;</pre>
+<p>
+  در مثال XML بالا، ۶ جواب ممکن است وجود داشته باشد، «پنج‌شنبه»، «پنج شنبه»، «۵شنبه»، «۵ شنبه»، «5شنبه» و «5 شنبه». تمام جواب‌ها MD5 شده‌اند. توجه کنید که در سیستم‌عامل ویندوز به‌دلیل استفاده نشدن از کیبورد استاندارد فارسی، اعداد به انگلیسی نیز جواب صحیح محسوب می‌شوند. شما آزادید که چگونه این را پیاده‌سازی کنید. این مثال زیر در پی‌اچ‌پی نسخهٔ ۵ نوشته شده‌است و از simpleXML استفاده می‌کند.<br />
+  نخستین قدم گرفتن کپچا و قرار دادن سوال در فرم کاربر و ذخیره کردن جواب آن در متغیر session است.
+</p>
+
+<pre class="prettyprint linenums">
+  &lt;?php
+  session_start();
+
+  // load captcha using web service
+  $url = &#x27;http://api.textcaptcha.com/my_api_key&#x27;;
+  try {
+    $xml = @new SimpleXMLElement($url,null,true);
+  } catch (Exception $e) {
+    // if there is a problem, use static fallback..
+    $fallback = &#x27;&lt;captcha&gt;&#x27;.
+        &#x27;&lt;question&gt;Is ice hot or cold?&lt;/question&gt;&#x27;.
+       &#x27;&lt;answer&gt;&#x27;.md5(&#x27;cold&#x27;).&#x27;&lt;/answer&gt;&lt;/captcha&gt;&#x27;;
+    $xml = new SimpleXMLElement($fallback);
+  }
+
+  // display question as part of form
+  $question = (string) $xml-&gt;question;
+    // ... [snip] ...
+
+  // store answers in session
+  $ans = array();
+  foreach ($xml-&gt;answer as $hash)
+    $ans[] = (string) $hash;
+  $_SESSION[&#x27;captcha&#x27;] = $ans;</pre>
+
+<p>
+  وقتی فرم فرستاده شد، جوابی که توسط کاربر داده شده‌است باید با جوابی که در session ذخیره شده‌است، اعتبارسنجی شود. شما باید ابتدا جواب کاربر را <strong>trim</strong> کنید و سپس آن‌را <strong>MD5 hash</strong> کنید و سپس با جوابی که در session ذخیره شده‌است مقایسه کنید.
+</p>
+
+<pre class="prettyprint linenums">
+  &lt;?php
+  session_start();
+  $ans = $_POST[&#x27;captcha&#x27;]; // .. or whatever!
+  $ans = strtolower(trim($ans));
+  $ans = md5($ans);
+
+  if (in_array($ans,$_SESSION[&#x27;captcha&#x27;])) {
+      // passed..!
+  } else {
+      // error: redisplay form, etc.
+  }
+</pre>
+
+<h4>استفاده پیشرفته</h4>
+
+<p>
+  شما می‌توانید جواب‌ها را در داخل یک ورودی پنهان نیز قرار دهید. اما توجه کنید <strong>اگر از salt استفاده نکنید پیاده‌سازی شما ضعیف خواهد بود</strong>. برای مثال یک ربات ممکن است با hash کردن تک تک کلمات سوال و مقایسه کردن آن با آن ورودی پنهان به جواب صحیح دست پیدا کند. برای این‌که در مقابل این نوع حملات محافظت شوید، از salt باید استفاده کنید.
+</p>
+
+<pre class="prettyprint linenums">
+  &lt;?php
+  $salt = &#x27;MySecretSalt&#x27;;
+
+  // ... [snip] ...
+
+  // output hidden form fields
+  foreach ($xml-&gt;answer as $hash) {
+    $ans = md5($hash.$salt);
+    echo &#x27;&lt;input type=&quot;hidden&quot; name=&quot;ans[]&quot; value=&quot;&#x27;.$ans.&#x27;&quot; /&gt;&#x27;;
+  }
+
+  // ... [snip] ...
+
+  // on submission, validate against hidden fields
+  $user_ans = $_POST[&#x27;captcha&#x27;]; // .. or whatever!
+  $user_ans = strtolower(trim($user_ans));
+  $user_ans = md5(md5($user_ans).$salt);
+  if (in_array($user_ans,$_POST[&#x27;ans&#x27;])) {
+     // passed..!
+  } else {
+     // error: redisplay form, etc.
+  }</pre>
+
+<p>
+  در پیاده‌سازی‌های که از session استفاده نمی‌کنید، <strong>باید توجه کنید که امکان دارد یک ربات از یک کپچا چندین چند بار استفاده کند</strong>. برای مثال اگر ربات فرم را بارگیری کند و یک‌بار به صورت دستی جواب صحیح را وارد کند، آن‌گاه می‌تواند آن فرم را چندین و چند بار با استفاده از همان کپچا، بفرستند و آزمایش کپچا را با موفقیت پشت سر بگذارد. برای جلوگیری از این نوع حملات شما باید کپچایی که برای یک شی فرم ساخته می‌شود، قفل کنید و مطمئن شوید که از آن برای همان فرم استفاده شده‌است. این را می‌توان با استفاده از timeouts در فرم و تکنیک‌های دیگری که برای مقابله با حملات <abbr title="Cross Site Request Forgeries">CSRF</abbr> طراحی شده‌است، استفاده کنید. توضیح کامل آن خارج از این مقوله است، اما به‌یاد داشته باشید در پیاده‌سازی‌های خود آن‌را به‌درستی اعمال کنید.
+</p> 
