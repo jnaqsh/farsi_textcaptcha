@@ -15,3 +15,5 @@
 //= require twitter/bootstrap
 //= require jquery_nested_form
 //= require nested_form_overrides
+//= require prettify
+//= require static_pages
