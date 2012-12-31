@@ -1,7 +1,7 @@
 FarsiTextcaptcha::Application.routes.draw do
   get '/sessions/new' => "sessions#new", as: "new_session"
-  post '/sessions/create' => "sessions#new", as: "sessions"
-  delete '/sessions' => "sessions#destroy", as: "session"
+  post '/sessions' => "sessions#create", as: "sessions"
+  delete '/session' => "sessions#destroy", as: "session"
 
   resources :users, except: [:new, :create]
   resources :answers
