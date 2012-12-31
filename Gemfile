@@ -30,6 +30,7 @@ gem 'rails-i18n', git: 'https://github.com/iCEAGE/rails-i18n.git'
 
 gem 'nested_form', :git => 'https://github.com/ryanb/nested_form.git'
 gem 'simple_form'
+gem 'active_link_to'
 
 group :test, :development do
   gem "rspec-rails"

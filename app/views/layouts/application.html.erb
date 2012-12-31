@@ -47,14 +47,18 @@
           <%= link_to (image_tag "farsi_textcaptcha_logo.png"), root_path, class: "brand" %>
           <div class="pull-left">
             <ul class="nav">
-                <li><%= link_to t('.register'), new_user_path %></li>
+              <%= active_link_to t('.register'), new_user_path, wrap_tag: :li %>
             </ul>
           </div>
           <div class="container nav-collapse">
             <ul class="nav">
-              <li><%= link_to "سوالی جدید بنویسید", new_question_path  %></li>
-              <li><%= link_to "فهرست سوا‌ل‌ها", questions_path  %></li>
-              <li><%= link_to "سوال‌های تاییدنشده", unapproved_questions_path  %></li>
+              <%= active_link_to "صفحه اصلی", root_path, wrap_tag: :li %>
+              <%= active_link_to "سوالی جدید بنویسید", new_question_path, wrap_tag: :li,
+                active: [['questions'],['new', 'create']] %>
+              <%= active_link_to "فهرست سوا‌ل‌ها", questions_path, wrap_tag: :li,
+                active: [['questions'], ['index']] %>
+              <%= active_link_to "سوال‌های تاییدنشده", unapproved_questions_path,
+                wrap_tag: :li, active: [['questions'], ['unapproved']]  %></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -77,15 +81,17 @@
             <div class="well sidebar-nav">
               <h3><%= link_to "textcaptcha.ir", "http://textcaptcha.ir/" %></h3>
               <ul class="nav nav-list">
-                <li><%= link_to "آیا واقعا نیاز به کپچا دارید؟", "/really"  %></li>
-                <li><%= link_to "چرا؟", "/why"  %></li>
-                <li><%= link_to "سوالی جدید بنویسید", new_question_path %></li>
-                <li><%= link_to "پیش‌نمایش", "/demo"  %></li>
-                <li><%= link_to "چگونه کار می‌کند؟", "/how_it_works"  %></li>
-                <li><%= link_to "ثبت‌نام", "/register"  %></li>
-                <li><%= link_to "Api", "/api"  %></li>
-                <li><%= link_to "#{(number_to_human @number_of_approved_questions).persian_cleanup} سوال ساده!",
-                  root_path %></li>
+                <%= active_link_to "آیا واقعا نیاز به کپچا دارید؟", "/really", wrap_tag: :li  %>
+                <%= active_link_to "چرا؟", "/why", wrap_tag: :li %>
+                <%= active_link_to "سوالی جدید بنویسید", new_question_path, wrap_tag: :li,
+                  active: [['questions'], ['new', 'create']] %>
+                <%= active_link_to "پیش‌نمایش", "/demo", wrap_tag: :li %>
+                <%= active_link_to "چگونه کار می‌کند؟", "/how_it_works", wrap_tag: :li %>
+                <%= active_link_to "ثبت‌نام", "/register", wrap_tag: :li,
+                  active: [['users'], ['new', 'create']]  %>
+                <%= active_link_to "Api", "/api", wrap_tag: :li  %>
+                <%= active_link_to "#{(number_to_human @number_of_approved_questions).persian_cleanup} سوال ساده!",
+                  root_path %>
               </ul>
             </div><!--/.well -->
           </div><!--/span-->
