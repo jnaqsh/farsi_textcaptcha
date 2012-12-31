@@ -11,11 +11,11 @@
     <% end %>
   </div>
 
-  <%= f.input :approved %>
+  <% if current_user %>
+    <%= f.input :approved %>
+  <% end %>
 
   <div class="form-actions">
     <%= f.button :submit, t('.submit'), class: 'btn-primary' %>
-    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                questions_path, :class => 'btn' %>
   </div>
 <% end %>

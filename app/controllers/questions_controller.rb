@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  skip_before_filter :authorize, only: [:new, :create, :api_get]
   def unapproved
     @questions = Question.unapproved
 
@@ -52,6 +53,8 @@ class QuestionsController < ApplicationController
   # POST /questions.json
   def create
     @question = Question.new(params[:question])
+
+    @question.approved = false unless current_user
 
     respond_to do |format|
       if @question.save
