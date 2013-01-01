@@ -22,7 +22,7 @@ class Question < ActiveRecord::Base
   end
 
   def self.demo_question
-    Question.approved.offset(rand(1000)).first
+    Question.approved.offset(rand(100)).first
   end
 
   def approve

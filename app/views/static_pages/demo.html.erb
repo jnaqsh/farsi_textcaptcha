@@ -4,9 +4,11 @@
 </p>
 
 <% @questions.each do |question| %>
-  <blockquote>
-    <p><%= question.question %></p>
-  </blockquote>
+  <% if question %>
+    <blockquote>
+      <p><%= question.question %></p>
+    </blockquote>
+  <% end %>
 <% end %>
 
 <p>

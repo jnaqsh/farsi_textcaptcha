@@ -2,7 +2,7 @@ class StaticPagesController < ApplicationController
   skip_before_filter :authorize
 
   def home
-    @question = Question.random
+    @question = Question.demo_question
   end
 
   def really
@@ -10,7 +10,7 @@ class StaticPagesController < ApplicationController
 
   def demo
     @questions = []
-    5.times {@questions << Question.random}
+    5.times {@questions << Question.demo_question}
   end
 
   def how_it_works
