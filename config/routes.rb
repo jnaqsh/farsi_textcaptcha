@@ -1,4 +1,10 @@
 FarsiTextcaptcha::Application.routes.draw do
+  constraints :subdomain => 'api', :format => :xml do
+    # Routing for API requests
+    get "/:api_key" => "questions#api_get", format: :xml
+    # ...
+  end
+
   get '/sessions/new' => "sessions#new", as: "new_session"
   post '/sessions' => "sessions#create", as: "sessions"
   delete '/session' => "sessions#destroy", as: "session"
@@ -18,12 +24,6 @@ FarsiTextcaptcha::Application.routes.draw do
   get "/api" => "static_pages#api"
   get "/register" => "users#new", as: "new_user"
   post "/register" => "users#create", as: "users"
-
-  constraints :subdomain => 'api', :format => :xml do
-    # Routing for API requests
-    get "/:api_key" => "questions#api_get", format: :xml
-    # ...
-  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

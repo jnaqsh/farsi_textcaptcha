@@ -15,12 +15,12 @@ class Question < ActiveRecord::Base
 
   before_validation :persian_cleanup
 
-  def self.random(number=nil)
-    if number
-      Question.approved.offset(rand(Question.approved.count)).limit(number)
-    else
-      Question.approved.offset(rand(Question.approved.count)).first
-    end
+  def self.random
+    Question.approved.offset(rand(Question.approved.count)).first
+  end
+
+  def self.demo_question
+    Question.approved.offset(rand(1000)).first
   end
 
   def approve

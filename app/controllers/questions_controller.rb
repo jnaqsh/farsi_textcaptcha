@@ -109,7 +109,11 @@ class QuestionsController < ApplicationController
   def api_get
     @user = User.find_by_api_key(params[:api_key])
 
-    @question = Question.random if @user
+    if @user && @user.api_key == "demo"
+      @question = Question.demo_question
+    else
+      @question = Question.random if @user
+    end
 
     respond_to do |format|
       format.xml
