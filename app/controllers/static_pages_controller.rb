@@ -9,7 +9,8 @@ class StaticPagesController < ApplicationController
   end
 
   def demo
-    @questions = Question.random(5)
+    @questions = []
+    5.times {@questions << Question.random}
   end
 
   def how_it_works
