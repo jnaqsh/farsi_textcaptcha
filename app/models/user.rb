@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
 
   before_validation :generate_password, unless: :password
 
+  acts_as_textcaptcha
+
   def send_api_key
     generate_token(:api_key)
     self.api_key_sent_at = Time.zone.now

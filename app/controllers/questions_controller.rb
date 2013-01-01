@@ -35,7 +35,7 @@ class QuestionsController < ApplicationController
   # GET /questions/new.json
   def new
     @question = Question.new
-
+    @question.textcaptcha
     @question.answers.build
 
     respond_to do |format|

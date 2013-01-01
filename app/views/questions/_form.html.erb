@@ -11,6 +11,13 @@
     <% end %>
   </div>
 
+  <%= textcaptcha_fields(f) do %>
+    <%= f.input :spam_answer, wrapper: :prepend do %>
+      <span class="add-on"><i class="icon-pencil"></i></span>
+      <%= f.input_field :spam_answer, class: "span6", placeholder: @question.spam_question %>
+    <% end %>
+  <% end %>
+
   <% if current_user %>
     <%= f.input :approved %>
   <% end %>

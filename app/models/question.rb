@@ -15,6 +15,8 @@ class Question < ActiveRecord::Base
 
   before_validation :persian_cleanup
 
+  acts_as_textcaptcha
+
   def self.random
     Question.approved.offset(rand(Question.approved.count)).first
   end

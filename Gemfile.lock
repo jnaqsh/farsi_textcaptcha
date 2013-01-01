@@ -15,6 +15,13 @@ GIT
       i18n (~> 0.5)
 
 GIT
+  remote: https://github.com/jnaqsh/acts_as_textcaptcha.git
+  revision: 974644efd1e8d9ad28cdeee7e9f5c3cc9fe3cfb4
+  specs:
+    acts_as_textcaptcha (3.0.5)
+      bcrypt-ruby
+
+GIT
   remote: https://github.com/ryanb/nested_form.git
   revision: f591c0d72d0119c50511c16153b3960fe2da8b71
   specs:
@@ -186,6 +193,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
+  acts_as_textcaptcha!
   bcrypt-ruby (~> 3.0.0)
   capybara
   coffee-rails (~> 3.2.1)
