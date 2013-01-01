@@ -20,4 +20,8 @@ class ApplicationController < ActionController::Base
       redirect_to new_session_path
     end
   end
+
+  def bypass_captcha_or_not(object)
+    object.skip_textcaptcha = current_user ? true : false
+  end
 end

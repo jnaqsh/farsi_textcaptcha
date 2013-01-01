@@ -29,6 +29,10 @@ class Question < ActiveRecord::Base
     update_attributes approved: true
   end
 
+  def perform_textcaptcha?
+    !skip_textcaptcha
+  end
+
   private
 
   def must_have_at_least_one_answer

@@ -38,6 +38,8 @@ class QuestionsController < ApplicationController
     @question.textcaptcha
     @question.answers.build
 
+    bypass_captcha_or_not @question
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @question }
@@ -55,6 +57,8 @@ class QuestionsController < ApplicationController
     @question = Question.new(params[:question])
 
     @question.approved = false unless current_user
+
+    bypass_captcha_or_not @question
 
     respond_to do |format|
       if @question.save

@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
     UserMailer.send_api_key(self.id).deliver
   end
 
+  def perform_textcaptcha?
+    !skip_textcaptcha
+  end
+
   private
   def generate_token(column)
     begin
