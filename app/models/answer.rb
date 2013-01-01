@@ -11,6 +11,7 @@ class Answer < ActiveRecord::Base
   validates_presence_of :answer
   validates_uniqueness_of :answer, scope: :question_id, case_sensitive: false
   validates_uniqueness_of :answer_md5, scope: :question_id, case_sensitive: false
+  validates_length_of :answer, maximum: 50
 
   private
 
