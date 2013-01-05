@@ -5,8 +5,9 @@ gem 'rails', '3.2.10'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
+group :development do
+  gem 'sqlite3'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -31,6 +32,8 @@ gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) support
 gem 'twitter-bootstrap-rails', :git => 'git@github.com:jnaqsh/twitter-bootstrap-rails.git'
 
 gem 'rails-i18n', git: 'https://github.com/iCEAGE/rails-i18n.git'
+
+gem 'rvm-capistrano'
 
 gem 'nested_form', :git => 'https://github.com/ryanb/nested_form.git'
 gem 'simple_form'
