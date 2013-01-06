@@ -1,7 +1,7 @@
 FarsiTextcaptcha::Application.routes.draw do
   constraints :subdomain => 'api', :format => :xml do
     # Routing for API requests
-    get "/:api_key" => "questions#api_get", format: :xml
+    get "/:api_key" => "questions#api_get", format: :xml, as: "api_get"
     # ...
   end
 
