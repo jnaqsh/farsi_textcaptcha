@@ -1,4 +1,5 @@
 require "bundler/capistrano"
+require "rvm/capistrano"                # Load RVM's capistrano plugin.
 
 server "oggy.jnaqsh.com", :web, :app, :db, primary: true
 
@@ -7,6 +8,7 @@ set :user, "deployer"
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
 set :use_sudo, false
+set :rvm_ruby_string, '1.9.3-p362'
 
 set :scm, "git"
 set :repository, "git@github.com:jnaqsh/#{application}.git"
@@ -29,13 +31,15 @@ namespace :deploy do
     sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
     sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
     run "mkdir -p #{shared_path}/config"
-    put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
+    put File.read("config/database.yml.sample"), "#{shared_path}/config/database.yml"
+    put File.read("config/textcaptcha.yml.sample"), "#{shared_path}/config/textcaptcha.yml"
     puts "Now edit the config files in #{shared_path}."
   end
   after "deploy:setup", "deploy:setup_config"
 
   task :symlink_config, roles: :app do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+    run "ln -nfs #{shared_path}/config/textcaptcha.yml #{release_path}/config/textcaptcha.yml"
   end
   after "deploy:finalize_update", "deploy:symlink_config"
 
@@ -47,5 +51,10 @@ namespace :deploy do
       exit
     end
   end
+
+  before "bundle:install" do
+    run "cd #{fetch(:latest_release)} && bundle config build.pg --with-pg-config=/usr/pgsql-9.2/bin/pg_config"
+  end
+
   before "deploy", "deploy:check_revision"
 end
