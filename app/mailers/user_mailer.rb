@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 class UserMailer < ActionMailer::Base
-  default from: "from@example.com"
+  default from: "do_not_reply@textcaptcha.ir"
 
   def send_api_key(user_id)
     @user = User.find(user_id)
