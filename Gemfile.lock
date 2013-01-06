@@ -92,6 +92,7 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     ffi (1.2.0)
+    gabba (1.0.1)
     highline (1.6.15)
     hike (1.2.1)
     i18n (0.6.1)
@@ -225,6 +226,7 @@ DEPENDENCIES
   capistrano
   capybara
   coffee-rails (~> 3.2.1)
+  gabba
   jquery-rails
   less-rails
   meta-tags

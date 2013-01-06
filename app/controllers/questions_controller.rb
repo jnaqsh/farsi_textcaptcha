@@ -111,6 +111,16 @@ class QuestionsController < ApplicationController
   end
 
   def api_get
+    if Rails.env == 'production'
+      gabba = Gabba::Gabba.new("UA-35290892-6", "textcaptcha.ir")
+
+      # grab the __utma and (optionally) __utmz unique identifiers
+      gabba.identify_user(cookies[:__utma], cookies[:__utmz])
+
+      # trigger actions as normal
+      gabba.page_view("api", api_get_path)
+    end
+
     @user = User.find_by_api_key(params[:api_key])
 
     if @user && @user.api_key == "demo"

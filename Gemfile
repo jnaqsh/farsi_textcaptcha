@@ -40,6 +40,7 @@ gem 'simple_form'
 gem 'active_link_to'
 gem 'acts_as_textcaptcha', git: "https://github.com/jnaqsh/acts_as_textcaptcha.git"
 gem 'meta-tags', :require => 'meta_tags'
+gem 'gabba'
 
 group :test, :development do
   gem "rspec-rails"
