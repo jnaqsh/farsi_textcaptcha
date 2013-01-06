@@ -9,6 +9,7 @@ FarsiTextcaptcha::Application.routes.draw do
   post '/sessions' => "sessions#create", as: "sessions"
   delete '/session' => "sessions#destroy", as: "session"
 
+  resources :api_key_resets, only: :create
   resources :users, except: [:new, :create]
   resources :answers
   resources :questions do

@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
     UserMailer.send_api_key(self.id).deliver
   end
 
+  def send_api_key_reset
+    UserMailer.send_api_key_reset(self.id).deliver
+  end
+
   def perform_textcaptcha?
     !skip_textcaptcha
   end

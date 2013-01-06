@@ -1,0 +1,7 @@
+<%= form_tag api_key_resets_path, method: :post, :class => 'form-horizontal' do %>
+
+  <%= email_field_tag :email, params[:email], class: "string email span6",
+    placeholder: t(".placeholder") %>
+  <%= submit_tag t('.submit'), class: "btn btn-primary" %>
+
+<% end %>

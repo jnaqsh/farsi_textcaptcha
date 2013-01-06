@@ -8,7 +8,7 @@ fa:
     users:
       create:
         flash:
-          success: "با موفقیت ثبت‌نام کردید، کلید api شما به ایمیل‌تان فرستاده شد."
+          success: "با موفقیت ثبت‌نام کردید، کلید API شما به ایمیل‌تان فرستاده شد."
       update:
         flash:
           success: "اطلاعات کاربر با موفقیت به‌روز گردید."
@@ -29,6 +29,10 @@ fa:
       destroy:
         flash:
           success: "با موفقیت خارج شدید."
+    api_key_resets:
+      create:
+        flash:
+          success: "کلید API به ایمیل شما فرستاده شد."
 
   #----------------------views--------------------------------------------------
   layouts:
@@ -81,7 +85,10 @@ fa:
     why:
       title: "چرا؟"
       description: "موافقان و مخالفان سوالات منطقی کپچا"
-
+  api_key_resets:
+    form:
+      submit: "دوباره کلید را بفرست"
+      placeholder: "ایمیل خود را برای یادآوری کلید API بنویسید"
 
   #---------------------activemodel---------------------------------------------
   activemodel:
@@ -121,7 +128,7 @@ fa:
         created_at: "تاریخ ثبت‌نام"
         full_name: "نام و نام خانوادگی"
         email: "ایمیل"
-        api_key: "کلید api"
+        api_key: "کلید API"
         password: "گذرواژه"
         spam_answer: "پاسخ دهید"
         spam_question: "ثابت کنید که ربات نیستید"
