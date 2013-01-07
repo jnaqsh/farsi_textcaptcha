@@ -37,6 +37,6 @@ class User < ActiveRecord::Base
   end
 
   def generate_password
-    generate_token(:password_digest)
+    self.password = SecureRandom.urlsafe_base64.downcase
   end
 end
