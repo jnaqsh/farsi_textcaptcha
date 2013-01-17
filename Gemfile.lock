@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/jnaqsh/acts_as_textcaptcha.git
-  revision: 974644efd1e8d9ad28cdeee7e9f5c3cc9fe3cfb4
+  revision: 6a0c8691cc13af1ffc44944cf750fe43ebf7c401
   specs:
     acts_as_textcaptcha (3.0.5)
       bcrypt-ruby
