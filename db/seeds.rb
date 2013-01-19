@@ -6,5 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-User.create({full_name: "demo", email: "demo@textcaptcha.ir", api_key: "demo"},
+demo_user = User.new({full_name: "demo", email: "demo@textcaptcha.ir", api_key: "demo"},
   without_protection: true)
+demo_user.skip_textcaptcha = true
+demo_user.save!
