@@ -1,14 +1,12 @@
 require "bundler/capistrano"
-require "rvm/capistrano"                # Load RVM's capistrano plugin.
 
-server "oggy.jnaqsh.com", :web, :app, :db, primary: true
+server "server.jnaqsh.com", :web, :app, :db, primary: true
 
 set :application, "farsi_textcaptcha"
 set :user, "deployer"
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
 set :use_sudo, false
-set :rvm_ruby_string, '1.9.3-p362'
 
 set :scm, "git"
 set :repository, "git@github.com:jnaqsh/#{application}.git"
@@ -25,16 +23,16 @@ namespace :deploy do
     run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
   end
 
-  %w[start stop restart].each do |command|
-    desc "#{command} unicorn server"
-    task command, roles: :app, except: {no_release: true} do
-      run "/etc/init.d/unicorn_#{application} #{command}"
-    end
+  task(:start) {}
+  task(:stop) {}
+
+  desc 'Restart Application'
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} touch #{File.join current_path,'tmp','restart.txt'}"
   end
 
   task :setup_config, roles: :app do
-    sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
-    sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
+    sudo "ln -nfs #{current_path}/config/nginx.conf /opt/nginx/sites-enabled/#{application}"
     run "mkdir -p #{shared_path}/config"
     put File.read("config/database.yml.sample"), "#{shared_path}/config/database.yml"
     put File.read("config/textcaptcha.yml.sample"), "#{shared_path}/config/textcaptcha.yml"
@@ -55,10 +53,6 @@ namespace :deploy do
       puts "Run `git push` to sync changes."
       exit
     end
-  end
-
-  before "bundle:install" do
-    run "cd #{fetch(:latest_release)} && bundle config build.pg --with-pg-config=/usr/pgsql-9.2/bin/pg_config"
   end
 
   before "deploy", "deploy:check_revision"
