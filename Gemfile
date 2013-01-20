@@ -22,7 +22,7 @@ group :assets do
 end
 
 group :production do
-  gem 'pg'
+  gem 'mysql2'
 end
 
 gem 'jquery-rails'
@@ -32,8 +32,6 @@ gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) support
 gem 'twitter-bootstrap-rails', :git => 'git@github.com:jnaqsh/twitter-bootstrap-rails.git'
 
 gem 'rails-i18n', git: 'https://github.com/iCEAGE/rails-i18n.git'
-
-gem 'rvm-capistrano'
 
 gem 'nested_form', :git => 'https://github.com/ryanb/nested_form.git'
 gem 'simple_form'
@@ -58,7 +56,7 @@ end
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-gem 'unicorn'
+# gem 'unicorn'
 
 # Deploy with Capistrano
 gem 'capistrano'
