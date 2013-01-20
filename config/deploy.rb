@@ -8,6 +8,11 @@ set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
 set :use_sudo, false
 
+# rbenv
+set :default_environment, {
+  "PATH" => "/home/#{user}/.rbenv/shims:/home/#{user}/.rbenv/bin:$PATH",
+}
+
 set :scm, "git"
 set :repository, "git@github.com:jnaqsh/#{application}.git"
 set :branch, "master"
