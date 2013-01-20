@@ -19,10 +19,12 @@ test:
   timeout: 5000
 
 production:
-  adapter:  postgresql
-  encoding: unicode
-  database: farsi_textcaptcha_production
-  pool: 5
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
   host: localhost
+  pool: 5
+  timeout: 5000
+  database: farsi_textcaptcha_production
   username: farsi_textcaptcha
   password:
