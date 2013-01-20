@@ -26,5 +26,5 @@ production:
   pool: 5
   timeout: 5000
   database: farsi_textcaptcha_production
-  username: farsi_textcaptcha
+  username: f_textcaptcha
   password:
