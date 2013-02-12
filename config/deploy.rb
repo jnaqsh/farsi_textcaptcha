@@ -28,8 +28,19 @@ namespace :deploy do
     run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
   end
 
-  task(:start) {}
-  task(:stop) {}
+  desc 'Start Application'
+  task :start, :roles => :app do
+    run "touch #{current_release}/tmp/restart.txt"
+  end
+
+  task :stop, :roles => :app do
+    # Do nothing.
+  end
+
+  desc "Restart Application"
+  task :restart, :roles => :app do
+    run "touch #{current_release}/tmp/restart.txt"
+  end
 
   desc 'Restart Application'
   task :restart, :roles => :app, :except => { :no_release => true } do
