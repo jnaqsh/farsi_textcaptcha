@@ -22,6 +22,7 @@ group :assets do
 end
 
 group :production do
+  gem 'execjs'
   gem 'mysql2'
 end
 
@@ -51,6 +52,9 @@ end
 
 # To use ActiveModel has_secure_password
  gem 'bcrypt-ruby', '~> 3.0.0'
+
+# for maintenance page in capistrano
+gem "capistrano-maintenance"
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
