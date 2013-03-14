@@ -1,4 +1,5 @@
 require "bundler/capistrano"
+require 'capistrano/maintenance'
 
 server "server.jnaqsh.com", :web, :app, :db, primary: true
 
