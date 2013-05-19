@@ -26,6 +26,9 @@ group :production do
   gem 'mysql2'
 end
 
+# for scheduling jobs
+gem 'whenever', :require => false
+
 gem 'jquery-rails'
 gem 'virastar'
 gem "therubyracer"

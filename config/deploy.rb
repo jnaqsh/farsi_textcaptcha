@@ -1,6 +1,10 @@
 require "bundler/capistrano"
 require 'capistrano/maintenance'
 
+set :whenever_command, "bundle exec whenever"
+set :whenever_environment, defer { "production" }
+require "whenever/capistrano"
+
 server "server.jnaqsh.com", :web, :app, :db, primary: true
 
 set :application, "farsi_textcaptcha"
@@ -51,8 +55,10 @@ namespace :deploy do
   task :setup_config, roles: :app do
     sudo "ln -nfs #{current_path}/config/nginx.conf /opt/nginx/sites-enabled/#{application}"
     run "mkdir -p #{shared_path}/config"
+    run "mkdir -p #{shared_path}/db_backup"
     put File.read("config/database.yml.sample"), "#{shared_path}/config/database.yml"
     put File.read("config/textcaptcha.yml.sample"), "#{shared_path}/config/textcaptcha.yml"
+    put File.read("config/dropbox.example.yml"), "#{shared_path}/config/dropbox.yml"
     puts "Now edit the config files in #{shared_path}."
   end
   after "deploy:setup", "deploy:setup_config"
@@ -60,6 +66,7 @@ namespace :deploy do
   task :symlink_config, roles: :app do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/config/textcaptcha.yml #{release_path}/config/textcaptcha.yml"
+    run "ln -nfs #{shared_path}/db_backup #{release_path}/db/db_backup"
   end
   after "deploy:finalize_update", "deploy:symlink_config"
 
