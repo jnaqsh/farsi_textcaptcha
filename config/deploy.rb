@@ -1,84 +1,63 @@
-require "bundler/capistrano"
-require 'capistrano/maintenance'
+# config valid only for Capistrano 3.1
+lock '3.1.0'
 
-set :whenever_command, "bundle exec whenever"
-set :whenever_environment, defer { "production" }
-require "whenever/capistrano"
+set :application, 'farsi_textcaptcha'
+set :repo_url, "git@github.com:jnaqsh/#{fetch(:application)}.git"
 
-server "server.jnaqsh.com", :web, :app, :db, primary: true
+# Default branch is :master
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
-set :application, "farsi_textcaptcha"
-set :user, "deployer"
-set :deploy_to, "/home/#{user}/apps/#{application}"
-set :deploy_via, :remote_cache
-set :use_sudo, false
+# Default deploy_to directory is /var/www/my_app
+set :deploy_to, "/home/deployer/apps/#{fetch(:application)}"
+set :rails_env, "production"
 
-# rbenv
-set :default_environment, {
-  "PATH" => "/home/#{user}/.rbenv/shims:/home/#{user}/.rbenv/bin:$PATH",
-}
+# Default value for :scm is :git
+# set :scm, :git
 
-set :scm, "git"
-set :repository, "git@github.com:jnaqsh/#{application}.git"
-set :branch, "master"
+# Default value for :format is :pretty
+# set :format, :pretty
 
-default_run_options[:pty] = true
-ssh_options[:forward_agent] = true
+# Default value for :log_level is :debug
+# set :log_level, :debug
 
-after "deploy", "deploy:cleanup" # keep only the last 5 releases
+# Default value for :pty is false
+# set :pty, true
+
+set :rbenv_type, :user # or :system, depends on your rbenv setup
+set :rbenv_ruby, '2.1.1'
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+set :rbenv_roles, :all # default value
+
+# Default value for :linked_files is []
+set :linked_files, %w{config/database.yml config/textcaptcha.yml config/dropbox.yml}
+
+# Default value for linked_dirs is []
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system db/db_backup}
+
+# Default value for default_env is {}
+set :default_env, { path: "~/.rbenv/shims:~/.rbenv/bin:$PATH" }
+
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+
+# Default value for keep_releases is 5
+set :keep_releases, 5
 
 namespace :deploy do
-  desc "reload the database with seed data"
-  task :seed do
-    run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
-  end
-
-  desc 'Start Application'
-  task :start, :roles => :app do
-    run "touch #{current_release}/tmp/restart.txt"
-  end
-
-  task :stop, :roles => :app do
-    # Do nothing.
-  end
-
-  desc "Restart Application"
-  task :restart, :roles => :app do
-    run "touch #{current_release}/tmp/restart.txt"
-  end
-
-  desc 'Restart Application'
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    run "#{try_sudo} touch #{File.join current_path,'tmp','restart.txt'}"
-  end
-
-  task :setup_config, roles: :app do
-    sudo "ln -nfs #{current_path}/config/nginx.conf /opt/nginx/sites-enabled/#{application}"
-    run "mkdir -p #{shared_path}/config"
-    run "mkdir -p #{shared_path}/db_backup"
-    put File.read("config/database.yml.sample"), "#{shared_path}/config/database.yml"
-    put File.read("config/textcaptcha.yml.sample"), "#{shared_path}/config/textcaptcha.yml"
-    put File.read("config/dropbox.example.yml"), "#{shared_path}/config/dropbox.yml"
-    puts "Now edit the config files in #{shared_path}."
-  end
-  after "deploy:setup", "deploy:setup_config"
-
-  task :symlink_config, roles: :app do
-    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-    run "ln -nfs #{shared_path}/config/textcaptcha.yml #{release_path}/config/textcaptcha.yml"
-    run "ln -nfs #{shared_path}/config/dropbox.yml #{release_path}/config/dropbox.yml"
-    run "ln -nfs #{shared_path}/db_backup #{release_path}/db/db_backup"
-  end
-  after "deploy:finalize_update", "deploy:symlink_config"
-
-  desc "Make sure local git is in sync with remote."
-  task :check_revision, roles: :web do
-    unless `git rev-parse HEAD` == `git rev-parse origin/master`
-      puts "WARNING: HEAD is not the same as origin/master"
-      puts "Run `git push` to sync changes."
-      exit
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      execute :touch, release_path.join('tmp/restart.txt')
     end
   end
 
-  before "deploy", "deploy:check_revision"
+  after :publishing, :restart
+
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      within release_path do
+        execute :'bin/rake', 'tmp:clear'
+      end
+    end
+  end
 end

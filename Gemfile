@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '3.2.17'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -12,13 +12,13 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails',   '~> 3.2.6'
+  gem 'coffee-rails', '~> 3.2.2'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
 
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier', '~> 2.5.0'
 end
 
 group :production do
@@ -57,7 +57,7 @@ end
  gem 'bcrypt-ruby', '~> 3.0.0'
 
 # for maintenance page in capistrano
-gem "capistrano-maintenance"
+#gem "capistrano-maintenance"
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
@@ -66,7 +66,12 @@ gem "capistrano-maintenance"
 # gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'capistrano'
+
+group :development do
+  gem 'capistrano-rails', '~> 1.0.0'
+  gem 'capistrano-rbenv', '~> 2.0'
+  gem 'capistrano-bundler', '~> 1.1.2'
+end
 
 # To use debugger
 # gem 'debugger'
