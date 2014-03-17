@@ -14,11 +14,7 @@ end
 group :assets do
   gem 'sass-rails',   '~> 3.2.6'
   gem 'coffee-rails', '~> 3.2.2'
-
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
-
-  gem 'uglifier', '~> 2.5.0'
+  gem "uglifier", "~> 2.5.0"
 end
 
 group :production do
@@ -29,18 +25,18 @@ end
 # for scheduling jobs
 gem 'whenever', :require => false
 
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 2.2.1'
 gem 'virastar'
 gem "therubyracer"
-gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+gem "less-rails", '~> 2.2.6' #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem 'twitter-bootstrap-rails', :git => 'git@github.com:jnaqsh/twitter-bootstrap-rails.git'
 
-gem 'rails-i18n', git: 'https://github.com/iCEAGE/rails-i18n.git'
+gem 'rails-i18n'
 
 gem 'nested_form', :git => 'https://github.com/ryanb/nested_form.git'
 gem 'simple_form'
 gem 'active_link_to'
-gem 'acts_as_textcaptcha', git: "https://github.com/jnaqsh/acts_as_textcaptcha.git"
+gem 'acts_as_textcaptcha', git: "https://github.com/jnaqsh/acts_as_textcaptcha.git", ref: "638b1"
 gem 'meta-tags', :require => 'meta_tags'
 gem 'gabba'
 
@@ -49,12 +45,12 @@ group :test, :development do
 end
 
 group :test do
-  gem 'capybara'
+  gem 'capybara', '~> 2.0.2'
   gem 'shoulda-matchers'
 end
 
 # To use ActiveModel has_secure_password
- gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'bcrypt-ruby', '~> 3.0.0'
 
 # for maintenance page in capistrano
 #gem "capistrano-maintenance"
